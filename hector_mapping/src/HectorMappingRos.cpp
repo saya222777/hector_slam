@@ -226,7 +226,7 @@ HectorMappingRos::~HectorMappingRos()
     delete map__publish_thread_;
 }
 
-void HectorMappingRos::scanCallback(const sensor_msgs::LaserScan& scan)
+void HectorMappingRos::scanCallback(const data_processor::LidarScan& scan)
 {
   if (hectorDrawings)
   {
@@ -419,7 +419,7 @@ void HectorMappingRos::publishMap(MapPublisherContainer& mapPublisher, const hec
   mapPublisher.mapPublisher_.publish(map_.map);
 }
 
-bool HectorMappingRos::rosLaserScanToDataContainer(const sensor_msgs::LaserScan& scan, hectorslam::DataContainer& dataContainer, float scaleToMap)
+bool HectorMappingRos::rosLaserScanToDataContainer(const data_processor::LidarScan& scan, hectorslam::DataContainer& dataContainer, float scaleToMap)
 {
   size_t size = scan.ranges.size();
 
@@ -441,7 +441,8 @@ bool HectorMappingRos::rosLaserScanToDataContainer(const sensor_msgs::LaserScan&
       dataContainer.add(Eigen::Vector2f(cos(angle) * dist, sin(angle) * dist));
     }
 
-    angle += scan.angle_increment;
+    // angle += scan.angle_increment;
+    angle = scan.angles[i++];
   }
 
   return true;

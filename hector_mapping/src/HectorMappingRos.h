@@ -37,6 +37,7 @@
 #include "message_filters/subscriber.h"
 
 #include "sensor_msgs/LaserScan.h"
+#include "data_processor/LidarScan.h"
 #include <std_msgs/String.h>
 
 #include "laser_geometry/laser_geometry.h"
@@ -71,14 +72,14 @@ public:
   ~HectorMappingRos();
 
 
-  void scanCallback(const sensor_msgs::LaserScan& scan);
+  void scanCallback(const data_processor::LidarScan& scan);
   void sysMsgCallback(const std_msgs::String& string);
 
   bool mapCallback(nav_msgs::GetMap::Request  &req, nav_msgs::GetMap::Response &res);
 
   void publishMap(MapPublisherContainer& map_, const hectorslam::GridMap& gridMap, ros::Time timestamp, MapLockerInterface* mapMutex = 0);
 
-  bool rosLaserScanToDataContainer(const sensor_msgs::LaserScan& scan, hectorslam::DataContainer& dataContainer, float scaleToMap);
+  bool rosLaserScanToDataContainer(const data_processor::LidarScan& scan, hectorslam::DataContainer& dataContainer, float scaleToMap);
   bool rosPointCloudToDataContainer(const sensor_msgs::PointCloud& pointCloud, const tf::StampedTransform& laserTransform, hectorslam::DataContainer& dataContainer, float scaleToMap);
 
   void setServiceGetMapData(nav_msgs::GetMap::Response& map_, const hectorslam::GridMap& gridMap);
